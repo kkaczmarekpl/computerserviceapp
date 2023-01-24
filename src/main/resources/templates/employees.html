@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pl"  xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Computer Service APP</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Muli" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/css/normalize.css}">
+        <link rel="stylesheet" th:href="@{/css/main-page-style.css}">
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/employee-page-style.css}">
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <nav class="grid-container-menu">
+                    <div class="item1"></div>
+                    <div class="item-hamburger-menu">
+                        <div class="logout" id="logout">WYLOGUJ</div>
+                        <div class="hamburger-menu"></div>
+                    </div>
+                    <a th:href="@{/index/service-request}" class="menu-item-overflow"><div class="item-menu">PRZYJĘCIA SERWISOWE</div></a>
+                    <a th:href="@{/index/clients}" class="menu-item-overflow"><div class="item-menu">KLIENCI</div></a>
+                    <a th:href="@{/index/employees}" class="menu-item-overflow"><div class="item-menu">PRACOWNICY</div></a>
+                </nav>
+            </header>
+            <main>
+                <button class="dodaj-przyjecie" data-toggle="modal" data-target="#newEmployeeModal" onclick="addNewEmployee()">+DODAJ PRACOWNIKA</button>
+                <div class="center">
+                    <table class="tabela-przyjecia">
+                        <tr>
+                            <th>ID</th>
+                            <th>IMIĘ</th>
+                            <th>NAZWISKO</th>
+                            <th>FUNKCJA</th>
+                            <th>DATA ZATRUDNIENIA</th>
+                            <th></th>
+                        </tr>
+                        <tr th:each="employee : ${employees}">
+                            <td th:text="${employee.id}"></td>
+                            <td th:text="${employee.firstName}"></td>
+                            <td th:text="${employee.lastName}"></td>
+                            <td th:text="${employee.permissionType}"></td>
+                            <td th:text="${employee.dateOfEmployment}"></td>
+                            <td><button class="list-button">EDYTUJ</button></td>
+                        </tr>
+                        <!--<tr>
+                            <td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>-->
+                    </table>
+                </div>
+            </main>
+            <div class="new-employee" id="newEmployeeModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <form action="#" method="POST" th:action="@{/index/employees/addNew}" th:object="${employee}">
+                    <div class="new-employee-title">
+                        <p>NOWY PRACOWNIK</p>
+                    </div>
+                    <div class="new-employee-panel">
+                        <div><label for="employee-firstname">IMIĘ: </label>
+                            <input type="text" placeholder="Wpisz imię..." name="firstName" id="employee-firstname" class="new-acceptance-inputs-padding" />
+                        </div>
+                        <div><label for="employee-lastname">Nazwisko: </label>
+                            <input type="text" placeholder="Wpisz nazwisko..." name="lastName" id="employee-lastname" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="employee-position">Stanowisko: </label>
+                            <input type="text" placeholder="Wpisz stanowisko..." name="permissionType" id="employee-position" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="employee-passwd">Hasło: </label>
+                            <input type="password" placeholder="Wpisz hasło..." name="password" id="employee-passwd" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="employee-passwd-repeat">Potwierdź hasło: </label>
+                            <input type="password" placeholder="Wpisz hasło..." name="employee-passwd-repeat" id="employee-passwd-repeat" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="employee-date">Data zatrudnienia: </label>
+                            <input type="date" placeholder="Wpisz datę zatrudnienia..." name="dateOfEmployment" id="employee-date" class="new-acceptance-inputs-padding">
+                        </div>
+                    </div>
+                    <div class="new-employee-action-buttons">
+                        <button class="new-acceptance-save-button" type="submit" value="zapisz">ZAPISZ</button>
+                        <div class="new-acceptance-close-button" data-dismiss="modal" value="anuluj" onclick="addNewEmployee()">ANULUJ</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            function addNewEmployee() {
+                clearAcceptanceInputs();
+                let btn = document.getElementById('newEmployeeModal');
+                let display = window.getComputedStyle(btn).display;
+                if(display == "block") {
+                    document.getElementById("newEmployeeModal").style.display = "none";
+                }
+                else if(display == "none")
+                    document.getElementById("newEmployeeModal").style.display = "block";
+            }
+
+            function clearAcceptanceInputs() {
+                document.getElementById('employee-firstname').value = "";
+                document.getElementById('employee-lastname').value = "";
+                document.getElementById('employee-position').value = "";
+            }
+
+            const logoutButton = document.getElementById("logout");
+
+            logout.addEventListener('click', function() {
+                window.location.href = "/index";
+            });
+            
+
+
+            </script>
+    </body>
+</html>

@@ -1,0 +1,84 @@
+.new-employee {
+    position: fixed;
+    z-index: 10;
+    width: 40vw;
+    height: 70vh;
+    padding: 1rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #EDE4E4;
+    -webkit-box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
+    box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
+    border-radius: 15px;
+    display: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.new-employee .new-employee-title {
+    margin: 2rem 0 2rem 0;
+}
+
+.new-employee .new-employee-title p{
+    font-size: 1.5rem;
+    margin: auto;
+    width: fit-content;
+}
+
+.new-employee-panel > div >input, .new-employee-panel > div >label {
+    height: 5vh;
+    border: none;
+}
+
+.new-employee-panel {
+    display: block;
+    margin: auto;
+    width: fit-content;
+    padding: 0.2rem;
+    margin-bottom: 1rem;
+}
+
+.new-employee-panel > div {
+    padding: 0.4rem;
+    text-align: right;
+}
+
+.new-employee-action-buttons {
+      text-align: center;
+      padding-right: 1rem;
+      display: flex;
+      justify-content: center;
+  }
+
+.new-employee-action-buttons button{
+    padding: 0.2rem 1.2rem 0.2rem 1.2rem;
+    margin-right: 0.6rem;
+}
+
+.new-employee-action-buttons div{
+    padding: 0.2rem 1.2rem 0.2rem 1.2rem;
+    margin-right: 0.6rem;
+    cursor: pointer;
+    background-color: buttonface;
+}
+
+.new-acceptance-close-button {
+    border: 2px solid red;
+    transition: 0.3s;
+}
+
+.new-acceptance-save-button {
+    border: 2px solid black;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.new-acceptance-inputs-padding {
+    padding: 0.4rem;
+}
+.new-employee-action-buttons div:hover {
+    background-color: black;
+    color: white;
+}

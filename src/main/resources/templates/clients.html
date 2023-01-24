@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl"  xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Computer Service APP</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Muli" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/css/normalize.css}">
+        <link rel="stylesheet" th:href="@{/css/main-page-style.css}">
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/employee-page-style.css}">
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <nav class="grid-container-menu">
+                    <div class="item1"></div>
+                    <div class="item-hamburger-menu">
+                        <div class="logout" id="logout">WYLOGUJ</div>
+                        <div class="hamburger-menu"></div>
+                    </div>
+                    <a th:href="@{/index/service-request}" class="menu-item-overflow"><div class="item-menu">PRZYJĘCIA SERWISOWE</div></a>
+                    <a th:href="@{/index/clients}" class="menu-item-overflow"><div class="item-menu">KLIENCI</div></a>
+                    <a th:href="@{/index/employees}" class="menu-item-overflow"><div class="item-menu">PRACOWNICY</div></a>
+                </nav>
+            </header>
+            <main>
+                <button class="dodaj-przyjecie" data-toggle="modal" data-target="#newClientModal" onclick="addNewClient()">+DODAJ KLIENTA</button>
+                <div class="center">
+                    <table class="tabela-przyjecia">
+                        <tr>
+                            <th>ID</th>
+                            <th>IMIĘ</th>
+                            <th>NAZWISKO</th>
+                            <th>NUMER TELEFONU</th>
+                            <th>E-MAIL</th>
+                            <th></th>
+                        </tr>
+                        <tr th:each="client : ${client}">
+                            <td th:text="${client.id}"></td>
+                            <td th:text="${client.firstName}"></td>
+                            <td th:text="${client.lastName}"></td>
+                            <td th:text="${client.phoneNumber}"></td>
+                            <td th:text="${client.email}"></td>
+                            <td><button class="list-button">EDYTUJ</button></td>
+                        </tr>
+                        <!--<tr>
+                            <td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>-->
+                    </table>
+                </div>
+            </main>
+            <div class="new-employee" id="newClientModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <form action="#" method="POST" th:action="@{/index/clients/addNew}" th:object="${client}">
+                    <div class="new-employee-title">
+                        <p>NOWY KLIENT</p>
+                    </div>
+                    <div class="new-employee-panel">
+                        <div><label for="client-firstname">Imię: </label>
+                            <input type="text" placeholder="Wpisz imię..." name="firstName" id="client-firstname" class="new-acceptance-inputs-padding" />
+                        </div>
+                        <div><label for="client-lastname">Nazwisko: </label>
+                            <input type="text" placeholder="Wpisz nazwisko..." name="lastName" id="client-lastname" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="client-phone">Numer telefonu: </label>
+                            <input type="text" placeholder="Wpisz numer..." name="phoneNumber" id="client-phone" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="client-mail">Adres e-mail: </label>
+                            <input type="text" placeholder="Wpisz e-mail..." name="email" id="client-mail" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="client-passwd">Hasło: </label>
+                            <input type="password" placeholder="Wpisz hasło..." name="password" id="client-passwd" class="new-acceptance-inputs-padding">
+                        </div>
+                        <div><label for="client-passwd-repeat">Potwierdź hasło: </label>
+                            <input type="password" placeholder="Wpisz hasło..." name="client-passwd-repeat" id="client-passwd-repeat" class="new-acceptance-inputs-padding">
+                        </div>
+                    </div>
+                    <div class="new-employee-action-buttons">
+                        <button class="new-acceptance-save-button" type="submit" value="zapisz">ZAPISZ</button>
+                        <div class="new-acceptance-close-button" data-dismiss="modal" value="anuluj" onclick="addNewClient()">ANULUJ</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            function addNewClient() {
+
+                let btn = document.getElementById('newClientModal');
+                let display = window.getComputedStyle(btn).display;
+                if(display == "block") 
+                    document.getElementById("newClientModal").style.display = "none";
+                else if(display == "none")
+                    document.getElementById("newClientModal").style.display = "block";
+            }
+
+            function clearAcceptanceInputs() {
+                document.getElementById('client-firstname').value = "";
+                document.getElementById('client-lastname').value = "";
+                document.getElementById('client-phone').value = "";
+                document.getElementById('client-email').value = "";
+                document.getElementById('client-passwd').value = "";
+
+            }
+
+            const logoutButton = document.getElementById("logout");
+
+            logout.addEventListener('click', function() {
+                window.location.href = "/index";
+            });
+            </script>
+    </body>
+</html>

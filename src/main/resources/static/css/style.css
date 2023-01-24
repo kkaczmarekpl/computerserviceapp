@@ -1,0 +1,280 @@
+.grid-container-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 5px;
+    min-height: 10vh;
+    /*justify-items: start;
+    align-items: center;*/
+    background-color: rgba(54, 191, 250, 0.5);
+    text-align: center;
+    padding: 10px;
+}
+
+.grid-container-menu > a > div, .grid-container-menu > div{
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .grid-container-menu > a > div:hover {
+    transform: scale(98%);
+    filter: brightness(85%);
+  }
+
+.logout {
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.logout:hover {
+    transform: scale(1.1);
+}
+
+.item-menu {
+    background-color: #D9D9D9;
+    border: 1px solid black;
+    height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.menu-item-overflow {
+    overflow: hidden;
+}
+
+.item1 {
+    grid-column: 1 / 5;
+}
+
+.item-hamburger-menu {
+    grid-column: 5/6;
+    grid-row: 1/ span 2;
+    display: block;
+}
+
+button.dodaj-przyjecie {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    border: 2px solid black;
+    transition: 0.3s;
+}
+
+button.list-button {
+    background-color: #D9D9D9;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 5px 12px 5px 12px;
+    border: 2px solid black;
+    transition: 0.3s;
+}
+
+
+button:hover {
+    background-color: black;
+    color: white;
+}
+
+table.tabela-przyjecia {
+    padding: 10px;
+}
+
+.tabela-przyjecia th, td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    /*padding: 10px; */
+    height: 6.5vh; 
+    width: 12vw;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-align: center;
+}
+
+tr:nth-child(even) {background-color: #D9D9D9;}
+tr:nth-child(odd) {background-color: #E3E3E3;}
+th {
+    background-color: rgba(105, 105, 105, 0.45);
+}
+
+.new-acceptance {
+    position: fixed;
+    z-index: 10;
+    width: 60vw;
+    height: 70vh;
+    padding: 1rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #EDE4E4;
+    -webkit-box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
+    box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
+    border-radius: 15px;
+    display: none;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* div.new-acceptance > p {
+    padding: 0.6rem;
+    border: 1px solid black;
+}
+*/
+.new-acceptance .acceptance-number {
+    margin: 2rem 0 2rem 0;
+}
+
+.new-acceptance .acceptance-number p{
+    font-size: 1.5rem;
+    margin: auto;
+    width: fit-content;
+}
+
+.new-acceptance .date {
+    position: fixed;
+    right: 2vw;
+    top: 2vh;
+}
+
+.new-acceptance-top-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 5px;
+    height: 30%;
+    width: 50vw;
+    padding: 0.6rem 3rem 0.6rem 3rem;
+}
+
+.new-acceptance-top-panel > div {
+    text-align: right;
+}
+
+.new-acceptance-top-panel > div >input, .new-acceptance-top-panel > div >label {
+    height: 5vh;
+    border: none;
+}
+
+#estimated-cost {
+    width: 40%;
+    text-align: right;
+}
+
+.new-acceptance-bottom-panel {
+    display: block;
+    height: 40%;
+    margin: auto;
+    width: fit-content;
+}
+
+.important-data-radio input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+  }
+
+.important-data-radio label {
+    display: inline-block;
+    background-color: white;
+    padding: 5px 15px 5px 15px;
+    font-size: 0.9rem;
+    border: 1px solid black;
+    cursor: pointer;
+  }
+
+.important-data-radio input[type="radio"]:checked + label {
+    background-color:black;
+    color: white;
+    border: 1px solid white;
+    animation: clickTransform 1s;
+}
+
+.important-data-radio input[type="radio"]:hover + label {
+    transform: scale(1.05)
+}
+
+@keyframes clickTransform {
+    0% {background-color: white;}
+    100% { transform: scale(0.95);
+        background-color: black;
+        color: white;}
+}
+
+.list-of-picked-up {
+    height: 30%;
+    border: 1px solid black;
+    background-color: white;
+    display: flex;
+  }
+
+.add-picked-up-button {
+    border-right: 1px solid black; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 10%;
+  }
+
+.new-picked-up-button {
+    border-right: 1px solid black; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 10%;
+    transition: 0.3s;
+}
+
+.new-picked-up-button:hover {
+    background-color: black;
+    color: white;
+}
+
+.new-acceptance-action-buttons {
+      float: right;
+      padding-right: 1rem;
+      display: flex;
+}
+
+.new-acceptance-action-buttons div{
+    padding: 0.2rem 1.2rem 0.2rem 1.2rem;
+    margin-right: 0.6rem;
+    cursor: pointer;
+    background-color: buttonface;
+}
+
+.new-acceptance-action-buttons div:hover {
+    background-color: black;
+    color: white;
+}
+
+.new-acceptance-action-buttons button{
+    padding: 0.2rem 1.2rem 0.2rem 1.2rem;
+    margin-right: 1rem;
+}
+
+.new-acceptance-close-button {
+    border: 2px solid red;
+    transition: 0.3s;
+}
+
+.new-acceptance-save-button {
+    border: 2px solid black;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+textarea {
+    width: 30vw;
+    height: 40%;
+}
+
+.new-acceptance-inputs-padding {
+    padding: 0.4rem;
+}

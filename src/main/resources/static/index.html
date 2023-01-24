@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Inteligente interfejsy</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Muli" rel="stylesheet">
+        <link rel="stylesheet" href="./css/normalize.css">
+        <link rel="stylesheet" href="./css/main-page-style.css">
+        <link rel="stylesheet" href="./css/login-panel-style.css">
+    </head>
+    <body>
+        <div class="container center">
+            <main>
+                <div class="login-panel">
+                    <div class="grid-float-center"><h1>LOGIN</h1></div>
+                    <div class="grid-float-center"><input type="text" name="username" placeholder="Username" id="username" required></div>
+                    <div class="grid-float-center"><input type="password" name="password" placeholder="Password" id="password" required></div>
+                    <div class="grid-float-left"><p class="login-panel-small-text login-panel-small-text-left-margin">Forgot your password? <span class="login-panel-small-text login-panel-small-text-blue-hyperlink" onclick="forgotPasswordClick()">Click here</span></p></div>
+                    <div class="grid-float-center"><button class="login-button" type="submit" onclick="loginToPage()" id="loginBtn">LOGIN</button></div>
+                    <div class="grid-float-left">
+                        <p class="login-panel-small-text">Not a client yet?</p>
+                        <span class="login-panel-small-text login-panel-small-text-blue-hyperlink" onclick="createNewAccount()" id="createNewAccount">Create new account</span>
+                    </div>
+                </div>
+            </main>
+            <form action="register" method="POST">
+                <div class="sign-in-popup-panel" id="sign-in-popup-panel">
+                    <h2 class="grid-float-center">Formularz rejestracyjny</h2>
+                    <div class="grid-float-center"><input type="text" name="username" placeholder="Username" id="usernameLogin" required></div>
+                    <div class="grid-float-center"><input type="email" name="email" placeholder="E-mail address" id="email" required></div>
+                    <div class="grid-float-center"><input type="password" name="password" placeholder="Password" id="usernamePassword" required></div>
+                    <div class="grid-float-center"><input type="password" name="conf-password" placeholder="Confirm password" id="conf-password" required></div>
+                    <div>
+                        <div class="sign-in-action-buttons">
+                            <button class="sign-in-save-button" type="submit" value="zapisz">ZAREJESTRUJ</button>
+                            <button class="sign-in-close-button" value="anuluj" onclick="createNewAccount()">ANULUJ</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script>
+            function forgotPasswordClick() {
+                alert("Zresetuj swoje hasło.");
+            }
+
+            function loginToPage() {
+                let username = document.getElementById("username").value;
+                let passwd = document.getElementById("password").value;
+
+                if(username == "" || passwd =="") 
+                    alert("Musisz podać dane!");
+                else if(username == "admin" && passwd =="admin") {
+                    window.location.href = "user-page.html";
+                } else
+                    alert("Błędne hasło lub login!");
+            }
+
+            function createNewAccount() {
+                let idValSignInPanel = 'sign-in-popup-panel';
+                clearFormInputs(idValSignInPanel);
+                let idValNewAccountButton = 'createNewAccount';
+                let btn = document.getElementById(idValSignInPanel);
+                let display = window.getComputedStyle(btn).display;
+                if(display == "grid") 
+                    document.getElementById(idValSignInPanel).style.display = "none";
+                else if(display == "none")
+                    document.getElementById(idValSignInPanel).style.display = "grid";
+            }
+
+            function clearFormInputs(idValSignInPanel) {
+                var rootNode = document.getElementById(idValSignInPanel);
+                var inputNodes = rootNode.getElementsByTagName('INPUT');
+                for(var i = 0; i < inputNodes.length; ++i){
+                    var inputNode = inputNodes[i];
+                    inputNode.value = "";
+                 }
+            }
+
+            let inputPassword = document.getElementById("password");
+            inputPassword.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("loginBtn").click();
+            }
+            });
+        </script>
+    </body>
+</html>
