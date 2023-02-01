@@ -1,7 +1,12 @@
 package pl.wsiz.computerserviceapp.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.wsiz.computerserviceapp.Role;
+import pl.wsiz.computerserviceapp.servicerequest.ServiceRequest;
+import pl.wsiz.computerserviceapp.user.User;
+import pl.wsiz.computerserviceapp.user.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +18,8 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private UserService userService;
 
     //public List<Client> getAllClients() {return clients;}  wersja przed JPA
     public List<Client> getAllClients() {
@@ -20,24 +27,55 @@ public class ClientService {
         clientRepository.findAll().forEach(clients::add);
         return clients;
     }
-    public List<Client> getClientByCompanyClient(Long id) {
-        List<Client> clients = new ArrayList<>();
-        clientRepository.findByCompanyClientId(id).forEach(clients::add);
-        return clients;
-    }
     public void addClient(Client client) {
         client.setClientType("standard");
         client.setAllowNotifications(true);
+        User user = new User();
+        user.setRole(Role.USER);
+        user.setUsername(((client.getFirstName()+client.getLastName()+getNextClientId()).trim()).toLowerCase());
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(client.getPassword());
+        user.setPassword(encodedPassword);
+
+        userService.addUser(user);
+        client.setUser(user);
         clientRepository.save(client);
     }
     public Optional<Client> getClient(Long id) {
         return clientRepository.findById(id);
     }
-    public void updateClient(Long id, Client client) {
-        clientRepository.save(client);
+    public void updateClient(Client client) {
+        Client clientSaved = new Client();
+        clientSaved = clientRepository.findById(client.getId()).get();
+        if(!clientSaved.equals(client)) {
+            client.setCompanyClient(clientSaved.getCompanyClient());
+            client.setClientType(clientSaved.getClientType());
+            client.setAllowNotifications(clientSaved.isAllowNotifications());
+            clientRepository.save(client);
+        }
     }
     public void deleteClient(Long id) {
         clientRepository.deleteById(id);
+    }
+    public List<Client> getClientByCompanyClient(Long id) {
+        List<Client> clients = new ArrayList<>();
+        clientRepository.findByCompanyClientId(id).forEach(clients::add);
+        return clients;
+    }
+
+    public Long getNextClientId() {
+        if(getBiggestId() <= 0)
+            return 1L;
+        else
+            return getBiggestId();
+    }
+
+    public Long getBiggestId() {
+        if(clientRepository.findBiggestId() != null)
+            return clientRepository.findBiggestId()+1;
+        else
+            return 1L;
     }
 
     //metody używane przy testowaniu obiektu client

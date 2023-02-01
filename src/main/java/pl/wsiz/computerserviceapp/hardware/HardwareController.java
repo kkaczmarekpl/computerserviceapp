@@ -15,15 +15,15 @@ public class HardwareController {
     private HardwareService hardwareService;
 
     @GetMapping("/hardware")
-    public List<Hardware> getAllCHardware() {
-        return hardwareService.getAllCHardware();
+    public List<Hardware> getAllHardware() {
+        return hardwareService.getAllHardware();
     }
     @GetMapping("/hardware/{id}")
     public Optional<Hardware> getHardware(@PathVariable Long id) {
         return hardwareService.getHardware(id);
     }
-    @PostMapping("/index/service-request/hardware")
-    public void addHardware(@RequestBody Hardware hardware) {
+    @PostMapping("/index/service-request/addNewHardware")
+    public void addHardware(Hardware hardware) {
         hardwareService.addHardware(hardware);
     }
     @PutMapping("/hardware/{id}")

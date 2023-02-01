@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl"  xmlns:th="http://www.thymeleaf.org">
+<html lang="pl"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
@@ -16,12 +16,19 @@
                 <nav class="grid-container-menu">
                     <div class="item1"></div>
                     <div class="item-hamburger-menu">
-                        <div class="logout" id="logout">WYLOGUJ</div>
+                        <a th:href="@{/logout}"><div class="logout" id="logout">WYLOGUJ</div></a>
                         <div class="hamburger-menu"></div>
                     </div>
                     <a href="service-request" class="menu-item-overflow"><div class="item-menu">PRZYJĘCIA SERWISOWE</div></a>
-                    <a href="clients" class="menu-item-overflow"><div class="item-menu">KLIENCI</div></a>
-                    <a href="employees" class="menu-item-overflow"><div class="item-menu">PRACOWNICY</div></a>
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <a href="clients" class="menu-item-overflow"><div class="item-menu">KLIENCI</div></a>
+                        <a href="employees" class="menu-item-overflow"><div class="item-menu">PRACOWNICY</div></a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_1')">
+                        <a href="clients" class="menu-item-overflow"><div class="item-menu">KLIENCI</div></a>
+                        <a href="employees" class="menu-item-overflow"><div class="item-menu">PRACOWNICY</div></a>
+                    </div>
+                    <span sec:authentication="principal.authorities"></span>
                 </nav>
             </header>
             <main>
@@ -84,9 +91,30 @@
                             </div>
                         </div>
                         <div class="new-acceptance-bottom-panel">
-                             <span>ODEBRANY SPRZĘT:</span>
-                            <div class="list-of-picked-up">
-                                <div class="add-picked-up-button" id="add-picked-up-button">+</div>
+                            <span>ODEBRANY SPRZĘT:</span>
+                            <div class="list-of-picked-up-grid-container">
+                                <div class="list-of-picked-up">
+                                    <div></div>
+                                    <div>TYP</div>
+                                    <div>NUMER SERYJNY</div>
+                                    <div>NAZWA/MODEL</div>
+                                    <div>PRODUCENT</div>
+                                </div>
+                                <div class="list-of-picked-up" id="list-of-picked-up">
+                                    <div class="add-picked-up-button" id="add-picked-up-button">+</div>
+                                    <div>
+                                        <input type="text" placeholder="Wpisz typ urządzenia..." name="type" id="hardware-type1" class="new-acceptance-inputs-padding" />
+                                    </div>
+                                    <div>
+                                        <input type="text" placeholder="Wpisz numer seryjny..." name="serialNumber" id="hardware-serial1" class="new-acceptance-inputs-padding" />
+                                    </div>
+                                    <div>
+                                        <input type="text" placeholder="Wpisz nazwę urządzenia..." name="name" id="hardware-name1" class="new-acceptance-inputs-padding" />
+                                    </div>
+                                    <div>
+                                        <input type="text" placeholder="Wpisz producenta..." name="producer" id="hardware-producer1" class="new-acceptance-inputs-padding" />
+                                    </div>
+                                </div>
                             </div>
                             <span>OPIS PROBLEMU:</span><br/>
                             <textarea name="descriptionOfTheProblem" id="description-of-the-problem" placeholder="Rodzaj uszkodzenia, czynności do wykonania, itd." class="new-acceptance-inputs-padding"></textarea>
@@ -97,8 +125,8 @@
                         </div>
                 </div>
             </form>
-            <div class="new-employee" id="newHardwareModal" tabindex="-1" role="dialog" aria-hidden="true">
-                <form action="#" method="POST" th:action="@{/index/service-request/hardware/addNew}" th:object="${hardware}">
+            <!--<div class="new-employee" id="newHardwareModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <form action="#" method="POST" th:action="@{/index/service-request/addNewHardware}" th:object="${hardware}">
                     <div class="new-employee-title">
                         <p>NOWY SPRZĘT</p>
                     </div>
@@ -121,71 +149,9 @@
                         <div class="new-acceptance-close-button" data-dismiss="modal" value="anuluj" onclick="addHardware()">ANULUJ</div>
                     </div>
                 </form>
-            </div>
+            </div>-->
         </div>
-        <script>
-            function addNewAcceptance() {
-                clearAcceptanceInputs();
-                let btn = document.getElementById('newAcceptanceModal');
-                let display = window.getComputedStyle(btn).display;
-                if(display == "block") 
-                    document.getElementById("newAcceptanceModal").style.display = "none";
-                else if(display == "none")
-                    document.getElementById("newAcceptanceModal").style.display = "block";
-            }
-
-            let howManyNew = 0;
-
-            function clearAcceptanceInputs() {
-                document.getElementById('client-name-input').value = "";
-                document.getElementById('important-data-yes').checked = false;
-                document.getElementById('important-data-no').checked = false;
-                document.getElementById('service-type').value = "";
-                document.getElementById('estimated-cost').value = "";
-                document.getElementById('description-of-the-problem').value = "";
-                const pickedUp = Array.from(document.getElementsByClassName('new-picked-up-button'));
-                pickedUp.forEach(picked => {
-                    picked.remove();
-                });
-                howManyNew = 0;
-            }
-
-            const addPickedUp = document.getElementById("add-picked-up-button");
-            let newElement;
-
-            function addHardware() {
-                let btn = document.getElementById('newHardwareModal');
-                let display = window.getComputedStyle(btn).display;
-                if(display == "block")
-                    document.getElementById("newHardwareModal").style.display = "none";
-                else if(display == "none")
-                    document.getElementById("newHardwareModal").style.display = "block";
-            }
-
-            addPickedUp.addEventListener('click', function() {
-                if(howManyNew>=5)
-                    alert("Nie możesz dodać więcej sprzętu!")
-                else {
-                    howManyNew++;
-                    newElement = document.createElement("div");
-                    newElement.setAttribute("class", "new-picked-up-button");
-                    let newElementContent = document.createTextNode(howManyNew);
-
-                    newElement.appendChild(newElementContent);
-                    let parentDiv = addPickedUp.parentNode;
-                    parentDiv.insertBefore(newElement, addPickedUp);
-                    addHardware();
-                }
-            });
-
-            const logoutButton = document.getElementById("logout");
-
-            logout.addEventListener('click', function() {
-                window.location.href = "/index";
-            });
-            
-
-
-            </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../static/js/service-requests.js" th:src="@{/js/service-requests.js}"></script>
     </body>
 </html>

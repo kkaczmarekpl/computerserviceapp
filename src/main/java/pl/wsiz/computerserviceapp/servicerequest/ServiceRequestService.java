@@ -8,6 +8,8 @@ import pl.wsiz.computerserviceapp.client.Client;
 import pl.wsiz.computerserviceapp.client.ClientRepository;
 import pl.wsiz.computerserviceapp.client.ClientService;
 import pl.wsiz.computerserviceapp.employee.EmployeeService;
+import pl.wsiz.computerserviceapp.hardware.Hardware;
+import pl.wsiz.computerserviceapp.hardware.HardwareService;
 import pl.wsiz.computerserviceapp.requesttype.RequestType;
 import pl.wsiz.computerserviceapp.requesttype.RequestTypeService;
 
@@ -29,6 +31,8 @@ public class ServiceRequestService {
     private ClientService clientService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private HardwareService hardwareService;
 
     private int rememberLastRequestId;
 
@@ -61,6 +65,7 @@ public class ServiceRequestService {
         serviceRequest.setRequestStatus("NEW");
         //serviceRequest.setClient(clientService.getClient().get());
         serviceRequest.setEmployee(employeeService.getEmployee(id).get());
+        Hardware hardware = new Hardware();
         serviceRequestRepository.save(serviceRequest);
     }
     public Optional<ServiceRequest> getServiceRequest(Long id) {
@@ -87,8 +92,13 @@ public class ServiceRequestService {
     }
 
     public int getNextRequestId(List<ServiceRequest> sr) {
-        int requestId = sr.get(sr.size() - 1).getId()+1;
+        int requestId;
+        if(sr.size() <= 0)
+            requestId = 1;
+        else
+            requestId = sr.get(sr.size() - 1).getId()+1;
         return requestId;
     }
+
 }
 

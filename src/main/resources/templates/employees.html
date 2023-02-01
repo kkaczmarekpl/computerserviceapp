@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl"  xmlns:th="http://www.thymeleaf.org">
+<html lang="pl"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
@@ -8,7 +8,7 @@
         <link rel="stylesheet" th:href="@{/css/normalize.css}">
         <link rel="stylesheet" th:href="@{/css/main-page-style.css}">
         <link rel="stylesheet" th:href="@{/css/style.css}">
-        <link rel="stylesheet" th:href="@{/css/employee-page-style.css}">
+        <link rel="stylesheet" th:href="@{/css/modal-windows-style.css}">
     </head>
     <body>
         <div class="container">
@@ -16,7 +16,7 @@
                 <nav class="grid-container-menu">
                     <div class="item1"></div>
                     <div class="item-hamburger-menu">
-                        <div class="logout" id="logout">WYLOGUJ</div>
+                        <a th:href="@{/logout}"><div class="logout" id="logout">WYLOGUJ</div></a>
                         <div class="hamburger-menu"></div>
                     </div>
                     <a th:href="@{/index/service-request}" class="menu-item-overflow"><div class="item-menu">PRZYJĘCIA SERWISOWE</div></a>
@@ -25,7 +25,7 @@
                 </nav>
             </header>
             <main>
-                <button class="dodaj-przyjecie" data-toggle="modal" data-target="#newEmployeeModal" onclick="addNewEmployee()">+DODAJ PRACOWNIKA</button>
+                <button class="dodaj-przyjecie" data-toggle="modal" id="addNewButton" data-target="#newEmployeeModal">+DODAJ PRACOWNIKA</button>
                 <div class="center">
                     <table class="tabela-przyjecia">
                         <tr>
@@ -42,7 +42,12 @@
                             <td th:text="${employee.lastName}"></td>
                             <td th:text="${employee.permissionType}"></td>
                             <td th:text="${employee.dateOfEmployment}"></td>
-                            <td><button class="list-button">EDYTUJ</button></td>
+                            <td class="td-buttons">
+                                <div class="grid-edit-buttons">
+                                    <a id="editButton" th:href="@{'/index/employees/getEmployee/'+${employee.id}}"><div class="edit-button">EDYTUJ</div></a>
+                                    <a id="deleteButton" th:href="@{'/index/employees/delete/' + ${employee.id}}"><div class="delete-button">USUŃ</div></a>
+                                </div>
+                            </td>
                         </tr>
                         <!--<tr>
                             <td></td><td></td><td></td><td></td><td></td><td></td>
@@ -50,64 +55,102 @@
                     </table>
                 </div>
             </main>
-            <div class="new-employee" id="newEmployeeModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-window display-block" id="newEmployeeModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <form action="#" method="POST" th:action="@{/index/employees/addNew}" th:object="${employee}">
-                    <div class="new-employee-title">
+                    <div class="modal-window-title">
                         <p>NOWY PRACOWNIK</p>
                     </div>
-                    <div class="new-employee-panel">
+                    <div class="modal-window-panel">
                         <div><label for="employee-firstname">IMIĘ: </label>
-                            <input type="text" placeholder="Wpisz imię..." name="firstName" id="employee-firstname" class="new-acceptance-inputs-padding" />
+                            <input type="text" placeholder="Wpisz imię..." name="firstName" id="employee-firstname" class="modal-window-inputs-padding" />
                         </div>
                         <div><label for="employee-lastname">Nazwisko: </label>
-                            <input type="text" placeholder="Wpisz nazwisko..." name="lastName" id="employee-lastname" class="new-acceptance-inputs-padding">
+                            <input type="text" placeholder="Wpisz nazwisko..." name="lastName" id="employee-lastname" class="modal-window-inputs-padding">
                         </div>
                         <div><label for="employee-position">Stanowisko: </label>
-                            <input type="text" placeholder="Wpisz stanowisko..." name="permissionType" id="employee-position" class="new-acceptance-inputs-padding">
+                            <input type="text" placeholder="Wpisz stanowisko..." name="permissionType" id="employee-position" class="modal-window-inputs-padding">
                         </div>
                         <div><label for="employee-passwd">Hasło: </label>
-                            <input type="password" placeholder="Wpisz hasło..." name="password" id="employee-passwd" class="new-acceptance-inputs-padding">
+                            <input type="password" placeholder="Wpisz hasło..." name="password" id="employee-passwd" class="modal-window-inputs-padding">
                         </div>
                         <div><label for="employee-passwd-repeat">Potwierdź hasło: </label>
-                            <input type="password" placeholder="Wpisz hasło..." name="employee-passwd-repeat" id="employee-passwd-repeat" class="new-acceptance-inputs-padding">
+                            <input type="password" placeholder="Wpisz hasło..." name="employee-passwd-repeat" id="employee-passwd-repeat" class="modal-window-inputs-padding">
                         </div>
                         <div><label for="employee-date">Data zatrudnienia: </label>
-                            <input type="date" placeholder="Wpisz datę zatrudnienia..." name="dateOfEmployment" id="employee-date" class="new-acceptance-inputs-padding">
+                            <input type="date" placeholder="Wpisz datę zatrudnienia..." name="dateOfEmployment" id="employee-date" class="modal-window-inputs-padding">
                         </div>
                     </div>
-                    <div class="new-employee-action-buttons">
-                        <button class="new-acceptance-save-button" type="submit" value="zapisz">ZAPISZ</button>
-                        <div class="new-acceptance-close-button" data-dismiss="modal" value="anuluj" onclick="addNewEmployee()">ANULUJ</div>
+                    <div class="modal-window-action-buttons">
+                        <button class="modal-window-save-button" type="submit" value="zapisz">ZAPISZ</button>
+                        <div class="modal-window-close-button" data-dismiss="modal" value="anuluj" id="addNewButtonClose">ANULUJ</div>
                     </div>
                 </form>
             </div>
+
+            <!--tło okien modal-->
+            <div id="overlay">
+            </div>
+            <!--okno modal ostrzezenie-->
+            <div class="modal-window display-block" id="deleteWarning" tabindex="-1" role="dialog" aria-hidden="true">
+                <div>
+                    <div class="modal-window-title">
+                        <p>USUŃ PRACOWNIKA</p>
+                    </div>
+                    <div class="modal-window-form-container">
+                        <!--<form action="#" method="PUT" th:action="@{/index/clients/update}" th:object="${client}">-->
+                        <div class="modal-window-panel center">
+                            <p>UWAGA! TA OPERACJA JEST NIEODWRACALNA!</p>
+                            <p>CZY NA PEWNO CHCESZ USUNĄĆ PRACOWNIKA?</p>
+                        </div>
+                        <div class="modal-window-action-buttons">
+                            <div class="modal-window-save-button" data-dismiss="modal" value="zapisz" id="deleteModalConfirm">POTWIERDŹ</div>
+                            <div class="modal-window-close-button" data-dismiss="modal" id="deleteModalClose" value="anuluj">ANULUJ</div>
+                        </div>
+                        <!--</form>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-window display-block" id="editEmployeeModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div>
+                    <div class="modal-window-title">
+                        <p id="editIdTitle"></p>
+                    </div>
+                    <div class="modal-window-form-container">
+                        <form action="#" method="PUT" th:action="@{/index/employees/update}" th:object="${employee}">
+                            <div class="modal-window-panel">
+                                <div><label for="editEmployeeId">Imię: </label>
+                                    <input type="text" name="id" id="editEmployeeId" class="modal-window-inputs-padding" readonly/>
+                                </div>
+                                <div><label for="employee-firstname">IMIĘ: </label>
+                                    <input type="text" placeholder="Wpisz imię..." name="firstName" id="editEmployeeFirstname" class="modal-window-inputs-padding" />
+                                </div>
+                                <div><label for="employee-lastname">Nazwisko: </label>
+                                    <input type="text" placeholder="Wpisz nazwisko..." name="lastName" id="editEmployeeLastname" class="modal-window-inputs-padding">
+                                </div>
+                                <div><label for="employee-position">Stanowisko: </label>
+                                    <input type="text" placeholder="Wpisz stanowisko..." name="permissionType" id="editEmployeePosition" class="modal-window-inputs-padding">
+                                </div>
+                                <div><label for="employee-passwd">Hasło: </label>
+                                    <input type="password" placeholder="Wpisz hasło..." name="password" id="editEmployeePassword" class="modal-window-inputs-padding">
+                                </div>
+                                <div><label for="employee-passwd-repeat">Potwierdź hasło: </label>
+                                    <input type="password" placeholder="Wpisz hasło..." name="employee-passwd-repeat" id="editEmployeePasswordRepeat" class="modal-window-inputs-padding">
+                                </div>
+                                <div><label for="employee-date">Data zatrudnienia: </label>
+                                    <input type="date" placeholder="Wpisz datę zatrudnienia..." name="dateOfEmployment" id="editEmployeeDate" class="modal-window-inputs-padding">
+                                </div>
+                            </div>
+                            <div class="modal-window-action-buttons">
+                                <button class="modal-window-save-button" type="submit" value="zapisz">ZAPISZ</button>
+                                <div class="modal-window-close-button" data-dismiss="modal" id="editModalClose" value="anuluj">ANULUJ</div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <script>
-            function addNewEmployee() {
-                clearAcceptanceInputs();
-                let btn = document.getElementById('newEmployeeModal');
-                let display = window.getComputedStyle(btn).display;
-                if(display == "block") {
-                    document.getElementById("newEmployeeModal").style.display = "none";
-                }
-                else if(display == "none")
-                    document.getElementById("newEmployeeModal").style.display = "block";
-            }
-
-            function clearAcceptanceInputs() {
-                document.getElementById('employee-firstname').value = "";
-                document.getElementById('employee-lastname').value = "";
-                document.getElementById('employee-position').value = "";
-            }
-
-            const logoutButton = document.getElementById("logout");
-
-            logout.addEventListener('click', function() {
-                window.location.href = "/index";
-            });
-            
-
-
-            </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../static/js/employees.js" th:src="@{/js/employees.js}"></script>
     </body>
 </html>

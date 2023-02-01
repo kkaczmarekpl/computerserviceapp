@@ -18,10 +18,10 @@
     font-weight: bold;
   }
 
-  .grid-container-menu > a > div:hover {
-    transform: scale(98%);
-    filter: brightness(85%);
-  }
+.grid-container-menu > a > div:hover {
+   transform: scale(98%);
+   filter: brightness(85%);
+ }
 
 .logout {
     cursor: pointer;
@@ -85,7 +85,7 @@ table.tabela-przyjecia {
 .tabela-przyjecia th, td {
     border: 2px solid black;
     border-collapse: collapse;
-    /*padding: 10px; */
+    padding: 10px;
     height: 6.5vh; 
     width: 12vw;
     font-size: 0.7rem;
@@ -103,7 +103,6 @@ th {
     position: fixed;
     z-index: 10;
     width: 60vw;
-    height: 70vh;
     padding: 1rem;
     top: 50%;
     left: 50%;
@@ -118,11 +117,10 @@ th {
     font-weight: bold;
 }
 
-/* div.new-acceptance > p {
-    padding: 0.6rem;
-    border: 1px solid black;
+.display-block {
+    display: block;
 }
-*/
+
 .new-acceptance .acceptance-number {
     margin: 2rem 0 2rem 0;
 }
@@ -203,21 +201,30 @@ th {
         color: white;}
 }
 
+.list-of-picked-up-grid-container {
+  display: grid;
+  margin-bottom: 5%
+}
+
 .list-of-picked-up {
-    height: 30%;
-    border: 1px solid black;
     background-color: white;
-    display: flex;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
   }
+.list-of-picked-up > div {
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid black;
+}
+
+.list-of-picked-up > div > input {
+    font-size: 0.7rem;
+}
 
 .add-picked-up-button {
     border-right: 1px solid black; 
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 10%;
   }
 
 .new-picked-up-button {
@@ -278,3 +285,38 @@ textarea {
 .new-acceptance-inputs-padding {
     padding: 0.4rem;
 }
+.grid-edit-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.2rem;
+}
+
+.edit-button {
+    display: flex;
+    padding: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    transition: 0.3s;
+}
+
+.delete-button {
+    border: 2px solid red;
+    display: flex;
+    padding: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.delete-button:hover {
+    color: white;
+    background-color: red;
+}
+
+
+.edit-button:hover {
+    color: white;
+    background-color: black;
+}
+

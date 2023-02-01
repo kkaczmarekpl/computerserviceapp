@@ -1,5 +1,6 @@
 package pl.wsiz.computerserviceapp.servicerequest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.wsiz.computerserviceapp.client.Client;
 import pl.wsiz.computerserviceapp.client.ClientService;
 import pl.wsiz.computerserviceapp.employee.Employee;
+import pl.wsiz.computerserviceapp.hardware.Hardware;
+import pl.wsiz.computerserviceapp.hardware.HardwareService;
 import pl.wsiz.computerserviceapp.requesttype.RequestType;
 import pl.wsiz.computerserviceapp.requesttype.RequestTypeService;
 
@@ -21,6 +24,8 @@ public class ServiceRequestController {
 
     @Autowired
     private ServiceRequestService serviceRequestService;
+    @Autowired
+    private HardwareService hardwareService;
 
     /*@GetMapping("/service-request")
     public List<ServiceRequest> getAllServiceRequest() {
@@ -39,8 +44,14 @@ public class ServiceRequestController {
         return "service-request";
     }
     @PostMapping("/index/service-request/addNew")
-    public String addServiceRequest(@ModelAttribute("servicerequest") ServiceRequest serviceRequest, Model model) {
-        model.addAttribute("listClients");
+    public String addServiceRequest(@ModelAttribute("servicerequest") ServiceRequest serviceRequest, Model model, HttpServletRequest request) {
+        //model.addAttribute("listClients");
+        String[] hardwareTypes = request.getParameterValues("type");
+        String[] hardwareSerialNumbers = request.getParameterValues("serialNumber");
+        Hardware hardware = new Hardware();
+        model.addAttribute("hardware", hardware);
+
+
         //próba dodania clienta
         //model.getAttribute("servicerequest");
 /*        String clientFirstName = model.addAttribute("clientname", serviceRequestService.).toString();

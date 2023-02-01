@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Computer Service APP</title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Muli" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/css/normalize.css}">
+        <link rel="stylesheet" th:href="@{/css/main-page-style.css}">
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/login-panel-style.css}">
+        <link rel="stylesheet" th:href="@{/css/modal-windows-style.css}">
+    </head>
+    <body>
+        <div class="container center">
+            <main>
+                <p th:if="${loginError}" class="login-status">Wrong username or password.</p>
+                <p th:if="${logoutSuccess}" class="login-status">Successfully logged out.</p>
+                <p th:if="${registersuccess}" class="login-status">Successfully registered.</p>
+                <div th:if="${param.error}">
+                    Invalid username and password.
+                </div>
+                <div th:if="${param.logout}">
+                    You have been logged out.
+                </div>
+                <form th:action="@{/login}" method="post">
+                    <div class="login-panel">
+                        <div class="grid-float-center"><h1>LOGIN</h1></div>
+                        <div class="grid-float-center"><input type="text" name="username" placeholder="Username" id="username" required></div>
+                        <div class="grid-float-center"><input type="password" name="password" placeholder="Password" id="password" required></div>
+                        <div class="grid-float-left"><p class="login-panel-small-text login-panel-small-text-left-margin">Forgot your password? <span class="login-panel-small-text login-panel-small-text-blue-hyperlink" onclick="forgotPasswordClick()">Click here</span></p></div>
+                        <div class="grid-float-center"><input type="submit" class="login-button" value="LOGIN" id="loginBtn"/></div>
+                        <div class="grid-float-left">
+                            <p class="login-panel-small-text">Not a client yet?</p>
+                            <span class="login-panel-small-text login-panel-small-text-blue-hyperlink" id="createNewAccount">Create new account</span>
+                        </div>
+                    </div>
+                </form>
+            </main>
+            <form th:action="@{/register}" method="POST">
+                <div class="modal-window display-block" id="sign-in-popup-panel">
+                    <div class="modal-window-title">
+                        <p>Formularz rejestracyjny</p>
+                    </div>
+                    <div class="modal-window-panel">
+                        <input type="hidden" id="hidden-client-id" th:value="${nextclientid}"/>
+                        <div>
+                            <input type="text" name="username" placeholder="Username" id="usernameLogin" disabled>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Wpisz imię..." name="firstName" id="client-firstname" class="modal-window-inputs-padding" />
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Wpisz nazwisko..." name="lastName" id="client-lastname" class="modal-window-inputs-padding"/>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Wpisz numer telefou..." name="phoneNumber" id="client-phone" class="modal-window-inputs-padding">
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Wpisz e-mail..." name="email" id="client-mail" class="modal-window-inputs-padding">
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Wpisz hasło..." name="password" id="client-passwd" class="modal-window-inputs-padding">
+                        </div>
+                        <div>
+                            <input type="password" placeholder="Potwierdź hasło..." name="client-passwd-repeat" id="client-passwd-repeat" class="modal-window-inputs-padding">
+                        </div>
+                    </div>
+                    <div class="modal-window-action-buttons">
+                        <button class="modal-window-save-button" type="submit" value="zapisz">ZAREJESTRUJ</button>
+                        <div class="modal-window-close-button" data-dismiss="modal" value="anuluj" id="registerButtonClose">ANULUJ</div>
+                    </div>
+                </div>
+            </form>
+            <div id="overlay">
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../static/js/login.js" th:src="@{/js/login.js}"></script>
+    </body>
+</html>

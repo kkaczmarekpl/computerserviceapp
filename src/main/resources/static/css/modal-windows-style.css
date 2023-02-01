@@ -2,11 +2,10 @@
     position: fixed;
     z-index: 10;
     width: 40vw;
-    padding: 1rem;
     top: 50%;
     left: 50%;
     z-index: 2;
-    transform: translate(-50%, 100%);
+    transform: translate(-50%, 200%);
     background-color: #EDE4E4;
     -webkit-box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
     -moz-box-shadow: 8px 8px 50px 0px rgba(0, 0, 0, 1);
@@ -14,16 +13,22 @@
     border-radius: 15px;
     font-size: 1rem;
     font-weight: bold;
+    overflow: hidden;
+}
+
+.modal-window-form-container {
+    padding: 1rem;
 }
 
 .modal-window .modal-window-title {
-    margin: 2rem 0 2rem 0;
+    background-color: rgba(54, 191, 250, 0.5);
 }
 
 .modal-window .modal-window-title p{
     font-size: 1.5rem;
     margin: auto;
     width: fit-content;
+    padding: 1rem;
 }
 
 .modal-window-panel > div >input, .modal-window-panel > div >label {
@@ -46,7 +51,7 @@
 
 .modal-window-action-buttons {
       text-align: center;
-      padding-right: 1rem;
+      padding: 1rem 0rem;
       display: flex;
       justify-content: center;
   }
@@ -63,21 +68,50 @@
     background-color: buttonface;
 }
 
-.new-acceptance-close-button {
+.modal-window-close-button {
     border: 2px solid red;
     transition: 0.3s;
 }
 
-.new-acceptance-save-button {
+.modal-window-save-button {
     border: 2px solid black;
     transition: 0.3s;
     font-weight: bold;
 }
 
-.new-acceptance-inputs-padding {
+.modal-window-inputs-padding {
     padding: 0.4rem;
 }
 .modal-window-action-buttons div:hover {
     background-color: black;
     color: white;
+}
+#overlay {
+  position: fixed; /* Positioning and size */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128,128,128,0.5); /* color */
+  display: none; /* making it hidden by default */
+  z-index: 1;
+}
+
+.modal-in {
+    display: block;
+    animation: modalMoveUp 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+.modal-out {
+    animation: modalMoveDown 0.8s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+@keyframes modalMoveUp {
+    0%{    transform: translate(-50%, 200%);}
+    100%{    transform: translate(-50%, -50%);}
+}
+
+@keyframes modalMoveDown {
+    0%{    transform: translate(-50%, -50%);}
+    100%{    transform: translate(-50%, 200%);}
 }

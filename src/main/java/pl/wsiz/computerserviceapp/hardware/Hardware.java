@@ -20,19 +20,15 @@ public class Hardware {
     private String name;
     private String producer;
     private boolean released;
-    @ManyToOne
-    @JoinColumn(name="FK_Client_ID", referencedColumnName="ID")
-    private Client client; //Foreign Key
 
     public Hardware() {}
 
-    public Hardware(Long id, String type, String serialNumber, String name, String producer, boolean released, Client client) {
+    public Hardware(Long id, String type, String serialNumber, String name, String producer, boolean released) {
         this.id = id;
         this.type = type;
         this.serialNumber = serialNumber;
         this.name = name;
         this.producer = producer;
         this.released = released;
-        this.client = client;
     }
 }

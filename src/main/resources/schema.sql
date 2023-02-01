@@ -4,6 +4,27 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS  (SELECT * FROM sys.tables where name = N'Client')
+BEGIN
+	CREATE TABLE [dbo].[Client](
+		[ID] [int] IDENTITY(1,1) NOT NULL,
+		[FirstName] [varchar](255) NOT NULL,
+		[LastName] [varchar](255) NOT NULL,
+		[PhoneNumber] [varchar](255) NOT NULL,
+		[Email] [varchar](255) NOT NULL,
+		[ClientType] [varchar](255) NOT NULL,
+		[AllowNotifications] [bit] NOT NULL,
+		[Password] [varchar](255) NOT NULL,
+		[FK_CompanyID] [int] NULL,
+		[FK_UserID] [int] NOT NULL,
+		CONSTRAINT PK_ClientID PRIMARY KEY CLUSTERED
+		(
+			[ID] ASC
+		)
+	) ON [PRIMARY]
+END
+GO
+
 IF NOT EXISTS  (SELECT * FROM sys.tables where name = N'CompanyClient')
 BEGIN
 	CREATE TABLE [dbo].[CompanyClient](

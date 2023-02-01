@@ -33,6 +33,11 @@ input {
     width: 22.5vw;
 }
 
+.login-status {
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
 .login-panel-small-text-blue-hyperlink {
     color: #0077E4;
     cursor: pointer;
@@ -53,6 +58,8 @@ input {
     padding: 1.5vh 1.5vw 1.5vh 1.5vw;
     font-weight: bold;
     border: none;
+    cursor: pointer;
+    width: 100%;
 }
 
 .sign-in-popup-panel {
@@ -84,7 +91,7 @@ input {
     margin: 0;
 }
 
-button:hover {
+.login-button:hover {
     background-color: black;
     color: white;
 }

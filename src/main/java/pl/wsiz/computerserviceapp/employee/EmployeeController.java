@@ -40,20 +40,20 @@ public class EmployeeController {
         employeeService.addEmployee(employee);
         return "redirect:/index/employees";
     }
-    @GetMapping("/employee/{id}")
+    @GetMapping("/index/employees/getEmployee/{id}")
+    @ResponseBody
     public Optional<Employee> getEmployee(@PathVariable Long id) {
         return employeeService.getEmployee(id);
     }
-    /*@PostMapping("/employee")
-    public void addEmployee(@RequestBody Employee employee) {
-        employeeService.addEmployee(employee);
-    }*/
-    @PutMapping("/employee/{id}")
-    public void updateEmployee(@RequestBody Employee employee, @PathVariable Long id) {
-        employeeService.updateEmployee(id, employee);
+
+    @RequestMapping(value="/index/employees/update", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String updateEmployee(Employee employee, Long id) {
+        employeeService.updateEmployee(employee);
+        return "redirect:/index/employees";
     }
-    @DeleteMapping("/employee/{id}")
-    public void deleteEmployee(@PathVariable Long id) {
+    @RequestMapping(value="/index/employees/delete/{id}", method = RequestMethod.GET)
+    public String deleteEmployee(@PathVariable(name="id") Long id) {
         employeeService.deleteEmployee(id);
+        return "redirect:/index/employees";
     }
 }

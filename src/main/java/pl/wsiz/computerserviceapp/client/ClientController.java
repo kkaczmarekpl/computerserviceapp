@@ -34,21 +34,32 @@ public class ClientController {
         clientService.addClient(client);
         return "redirect:/index/clients";
     }
-    @GetMapping("/clients/{id}")
+    @PostMapping("/register")
+    public String registerClient(Client client, Model model) {
+/*        Employee newEmployee = new Employee();
+        newEmployee.setFirstName(employee.getFirstName());
+        newEmployee.setLastName(employee.getLastName());
+        newEmployee.setPermissionType(employee.getPermissionType());
+        newEmployee.setPassword(employee.getPassword());
+        newEmployee.setDateOfEmployment(employee.getDateOfEmployment());*/
+        clientService.addClient(client);
+        model.addAttribute("registersuccess", true);
+        return "redirect:/login";
+    }
+    @GetMapping("/index/clients/getClient/{id}")
+    @ResponseBody
     public Optional<Client> getClient(@PathVariable Long id) {
         return clientService.getClient(id);
     }
-/*    @PostMapping("/clients")
-    public void addClient(@RequestBody Client client) {
-        clientService.addClient(client);
-    }*/
-    @PutMapping("/clients/{id}")
-    public void updateClient(@RequestBody Client client, @PathVariable Long id) {
-        clientService.updateClient(id, client);
+    @RequestMapping(value="/index/clients/update", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String updateClient(Client client, Long id) {
+        clientService.updateClient(client);
+        return "redirect:/index/clients";
     }
-    @DeleteMapping("/clients/{id}")
-    public void deleteClient(@PathVariable Long id) {
+    @RequestMapping(value="/index/clients/delete/{id}", method = RequestMethod.GET)
+    public String deleteClient(@PathVariable(name="id") Long id) {
         clientService.deleteClient(id);
+        return "redirect:/index/clients";
     }
 
 }

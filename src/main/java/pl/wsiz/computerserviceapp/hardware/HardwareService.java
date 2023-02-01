@@ -14,12 +14,18 @@ public class HardwareService {
     @Autowired
     private HardwareRepository hardwareRepository;
 
-    public List<Hardware> getAllCHardware() {
+    public List<Hardware> getAllHardware() {
         List<Hardware> hardware = new ArrayList<>();
         hardwareRepository.findAll().forEach(hardware::add);
         return hardware;
     }
     public void addHardware(Hardware hardware) {
+        hardware.setReleased(false);
+        hardwareRepository.save(hardware);
+    }
+
+    public void addHardwareObject(Hardware hardware) {
+        hardware.setReleased(false);
         hardwareRepository.save(hardware);
     }
     public Optional<Hardware> getHardware(Long id) {
